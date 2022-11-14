@@ -7,4 +7,6 @@ import javax.inject.Inject
 class MainRepository @Inject constructor(private val service: MovieService) {
 
     suspend fun getTrendList() = service.getTrendMovieList(Constant.apiKey)
+
+    suspend fun getMovieDetails(movieId: String) = service.getMovieDetails(movieId, Constant.apiKey)
 }
