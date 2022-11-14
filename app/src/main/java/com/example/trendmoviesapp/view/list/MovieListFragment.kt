@@ -5,11 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.trendmoviesapp.R
 import com.example.trendmoviesapp.databinding.FragmentMovieListBinding
 import com.example.trendmoviesapp.remote.model.Movie
+import com.example.trendmoviesapp.utils.Constant
 import com.example.trendmoviesapp.utils.DataState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_list.*
@@ -35,7 +38,13 @@ class MovieListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initObserverData()
-        adapter = MovieAdapter(requireContext())
+        adapter = MovieAdapter(requireContext()) { movie ->
+            val bundle = Bundle()
+            bundle.putInt(Constant.id, movie.id)
+            findNavController().navigate(
+                R.id.action_FirstFragment_to_SecondFragment, bundle
+            )
+        }
     }
 
     private fun initObserverData() {
