@@ -8,17 +8,17 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.example.trendmoviesapp.R
-import com.example.trendmoviesapp.databinding.FragmentFirstBinding
+import com.example.trendmoviesapp.databinding.FragmentMovieListBinding
 import com.example.trendmoviesapp.remote.model.Movie
 import com.example.trendmoviesapp.utils.DataState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_first.*
+import kotlinx.android.synthetic.main.fragment_movie_list.*
 import kotlinx.android.synthetic.main.loading_message_layout.*
 
 @AndroidEntryPoint
 class MovieListFragment : Fragment() {
 
-    private var binding: FragmentFirstBinding? = null
+    private var binding: FragmentMovieListBinding? = null
 
     private val movieListViewModel by viewModels<MovieListViewModel>()
     lateinit var adapter: MovieAdapter
@@ -27,7 +27,7 @@ class MovieListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentFirstBinding.inflate(inflater, container, false)
+        binding = FragmentMovieListBinding.inflate(inflater, container, false)
         return binding?.root!!
     }
 
@@ -62,8 +62,6 @@ class MovieListFragment : Fragment() {
                     )
                 }
             }
-
-
         }
     }
 
@@ -76,6 +74,10 @@ class MovieListFragment : Fragment() {
             pb_progressbar.isVisible = isLoading
             tv_error.isVisible = hasError
             tv_error.text = txt
+            btn_retry.isVisible = hasError
+            btn_retry.setOnClickListener {
+                initObserverData()
+            }
         }
     }
 
