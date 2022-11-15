@@ -25,6 +25,7 @@ class MovieListFragment : Fragment() {
 
     private val movieListViewModel by viewModels<MovieListViewModel>()
     lateinit var adapter: MovieAdapter
+    private var moviesList = ArrayList<Movie>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,16 +35,32 @@ class MovieListFragment : Fragment() {
         return binding?.root!!
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList(Constant.listKey, moviesList)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initObserverData()
         adapter = MovieAdapter(requireContext()) { movie ->
             val bundle = Bundle()
             bundle.putInt(Constant.id, movie.id)
             findNavController().navigate(
                 R.id.action_FirstFragment_to_SecondFragment, bundle
             )
+        }
+
+        if (savedInstanceState != null) {
+            val list =
+                savedInstanceState.getParcelableArrayList(Constant.listKey, Movie::class.java)
+            adapter.addAllMovies(list as ArrayList<Movie>)
+            rv_movies.adapter = adapter
+
+        } else {
+
+            initObserverData()
+
         }
     }
 
@@ -58,6 +75,7 @@ class MovieListFragment : Fragment() {
                 DataState.DataStatus.SUCCESS -> {
                     showHideLoading()
                     val data = response.getData()?.results
+                    moviesList = data as ArrayList<Movie>
                     adapter.addAllMovies(data as ArrayList<Movie>)
                     rv_movies.adapter = adapter
                 }
