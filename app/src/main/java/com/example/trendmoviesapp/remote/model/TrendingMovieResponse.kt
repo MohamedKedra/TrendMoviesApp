@@ -1,5 +1,8 @@
 package com.example.trendmoviesapp.remote.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 data class TrendingMovieResponse(
     val page: Int,
     val results: List<Movie>,
@@ -7,6 +10,7 @@ data class TrendingMovieResponse(
     val total_results: Int
 )
 
+@Parcelize
 data class Movie(
     val adult: Boolean,
     val backdrop_path: String,
@@ -22,4 +26,4 @@ data class Movie(
     val video: Boolean,
     val vote_average: Double,
     val vote_count: Int
-)
+) : Parcelable
