@@ -52,15 +52,15 @@ class MovieListFragment : Fragment() {
         }
 
         if (savedInstanceState != null) {
+            showHideLoading()
             val list =
-                savedInstanceState.getParcelableArrayList(Constant.listKey, Movie::class.java)
+                savedInstanceState.getParcelableArrayList<Movie>(Constant.listKey)
+            moviesList = list as ArrayList<Movie>
             adapter.addAllMovies(list as ArrayList<Movie>)
             rv_movies.adapter = adapter
 
         } else {
-
             initObserverData()
-
         }
     }
 
